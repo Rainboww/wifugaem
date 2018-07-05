@@ -1,6 +1,4 @@
-package wifugaem.screens;
-
-import wifugaem.Tile;
+package wifugaem;
 
 public class WorldBuilder {
     private int width;
