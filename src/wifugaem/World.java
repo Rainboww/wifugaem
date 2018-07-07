@@ -3,8 +3,9 @@ package wifugaem;
 import wifugaem.Tile;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class World {
+public class World implements Serializable {
     private Tile[][] tiles;
     private int width;
     public int width() { return width; }
