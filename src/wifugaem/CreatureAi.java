@@ -12,3 +12,4 @@ public class CreatureAi implements Serializable {
 
     public void onEnter(int x, int y, Tile tile) { }
 }
+

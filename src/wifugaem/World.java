@@ -50,4 +50,8 @@ public class World implements Serializable {
         creature.x = x;
         creature.y = y;
     }
+
+    public void setTile(int x, int y, Tile tile) {
+        tiles[x][y] = tile;
+    }
 }

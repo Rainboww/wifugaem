@@ -19,6 +19,10 @@ public class StartScreen implements Screen{
             case KeyEvent.VK_SPACE: World w = WifuGameSerializer.deserializeWorld();
                                     Creature p = WifuGameSerializer.deserializePlayer(w);
                                     return new PlayScreen(w,p);
+            case KeyEvent.VK_PAGE_UP: return new MapEditScreen();
+            case KeyEvent.VK_PAGE_DOWN: World x = WifuGameSerializer.deserializeWorld();
+                                    Creature q = WifuGameSerializer.deserializePlayer(x);
+                                    return new MapEditScreen(x,q);
             default: return this;
         }
     }

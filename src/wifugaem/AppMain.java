@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import asciiPanel.AsciiPanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Properties;
+
 import wifugaem.screens.Screen;
 import wifugaem.screens.StartScreen;
 
