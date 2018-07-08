@@ -4,8 +4,8 @@ import java.io.*;
 
 public class WifuGameSerializer {
 
-    private static final String worldname = "worldfile.dat";
-    private static final String playername = "player.dat";
+    private static final String worldname = "worldfile.wifu";
+    private static final String playername = "player.wifu";
 
     public static void makeFolders() {
         File dir = new File("./saves");
