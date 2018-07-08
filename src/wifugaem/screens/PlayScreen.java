@@ -1,10 +1,7 @@
 package wifugaem.screens;
 
 import asciiPanel.AsciiPanel;
-import wifugaem.Creature;
-import wifugaem.CreatureFactory;
-import wifugaem.World;
-import wifugaem.WorldBuilder;
+import wifugaem.*;
 
 import java.awt.event.KeyEvent;
 
@@ -29,6 +26,13 @@ public class PlayScreen implements Screen{
         createWorld();
         CreatureFactory creatureFactory = new CreatureFactory(world);
         player = creatureFactory.newPlayer();
+    }
+
+    public PlayScreen(World world, Creature player) {
+        screenWidth = 80;
+        screenHeight = 21;
+        this.world = world;
+        this.player = player;
     }
 
     private void createWorld(){
@@ -70,6 +74,9 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_U: player.moveBy( 1,-1); break;
             case KeyEvent.VK_B: player.moveBy(-1, 1); break;
             case KeyEvent.VK_N: player.moveBy( 1, 1); break;
+            case KeyEvent.VK_S: WifuGameSerializer.serializeWorld(world);
+                                WifuGameSerializer.serializePlayer(player);
+                                break;
         }
 
         return this;

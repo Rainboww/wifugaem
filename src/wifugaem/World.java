@@ -1,7 +1,5 @@
 package wifugaem;
 
-import wifugaem.Tile;
-
 import java.awt.*;
 import java.io.Serializable;
 

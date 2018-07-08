@@ -15,4 +15,8 @@ public class CreatureFactory {
         new PlayerAi(player);
         return player;
     }
+
+    public static void setAsPlayer(Creature creature) {
+        new PlayerAi(creature);
+    }
 }

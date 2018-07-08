@@ -1,6 +1,8 @@
 package wifugaem;
 
-public class CreatureAi {
+import java.io.Serializable;
+
+public class CreatureAi implements Serializable {
     protected Creature creature;
 
     public CreatureAi(Creature creature){

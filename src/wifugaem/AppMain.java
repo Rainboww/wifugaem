@@ -41,5 +41,6 @@ public class AppMain extends JFrame implements KeyListener{
         AppMain app = new AppMain();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
+        WifuGameSerializer.makeFolders();
     }
 }
