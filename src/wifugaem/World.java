@@ -24,6 +24,11 @@ public class World implements Serializable {
             return tiles[x][y];
     }
 
+    public boolean tileExists(int x, int y) {
+        return (x >= 0 && x < width && y >= 0 & y < height);
+    }
+
+
     public char glyph(int x, int y){
         return tile(x, y).glyph();
     }

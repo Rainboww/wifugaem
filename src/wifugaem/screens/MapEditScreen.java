@@ -104,8 +104,9 @@ class DebugAi extends CreatureAi {
     }
 
     public void onEnter(int x, int y, Tile tile) {
-            creature.x = x;
-            creature.y = y;
-
+            if (super.creature.getWorld().tileExists(x, y)) {
+                creature.x = x;
+                creature.y = y;
+            }
     }
 }
