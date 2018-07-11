@@ -1,5 +1,7 @@
 package wifugaem;
 
+import java.util.Random;
+
 public class WorldBuilder {
     private int width;
     private int height;
@@ -15,7 +17,122 @@ public class WorldBuilder {
         return new World(tiles);
     }
 
-    private WorldBuilder randomizeTiles() {
+    private WorldBuilder randomizeField() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                tiles[x][y] = Math.random() < 0.05 ? Tile.TREE : Tile.GRASS;
+            }
+        }
+        return this;
+    }
+
+    private WorldBuilder addAccessibleBuildings(int size, int attempts) {
+        //size should be smaller than map size
+        if (size > width || size > height) size = Math.min(width, height) - 1;
+        //dont try to place zero interior sized buildings
+        if (size < 3) return this;
+        boolean isPossible = true;
+        //check number of valid entry tiles for purpose of spreading evenly.. ish
+        int validTiles = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (tiles[x][y].isGround()) validTiles++;
+            }
+        }
+        //random needed later
+        Random random = new Random();
+
+        //keep going while free tiles exist and buildings are left to place, can probably way optimize that
+        while(attempts > 0 && isPossible) {
+            isPossible = false;
+
+            //just go over all tiles
+            for (int x = 0; x < width && attempts > 0; x++) {
+                for (int y = 0; y < height && attempts > 0; y++) {
+                    //only check valid entrance tiles
+                    if (tiles[x][y].isGround()) {
+                        isPossible = true;
+                        //dont always go for the first tile, spread out using earlier valid tiles check
+                        if (Math.random() < (int) (attempts / validTiles)) {
+                            int leewayXMinus = x;
+                            int leewayXPlus = width - x - 1;
+                            int leewayYMinus = y;
+                            int leewayYPlus = height - y - 1;
+
+                            boolean canBuildUp = checkBuildUp(x, y, size);
+                            boolean canBuildDown = checkBuildDown(x, y, size);
+                            boolean canBuildleft = checkBuildLeft(x, y, size);
+                            boolean canBuildRight = checkBuildRight(x, y, size);
+                            //randomize build direction
+                            int buildOptions = 0;
+                            if (canBuildDown) buildOptions++;
+                            if (canBuildleft) buildOptions++;
+                            if (canBuildRight) buildOptions++;
+                            if (canBuildUp) buildOptions++;
+
+                            if (buildOptions == 0) continue;
+                            //sadly can't do nextint(0)
+                            int rnd;
+                            if (buildOptions == 1) rnd = 0;
+                            else rnd = random.nextInt(buildOptions - 1);
+
+                            //select chosen option
+                            if (canBuildUp) {
+                                if (rnd == 0) {
+                                    //TODO: build up
+                                }
+                                rnd--;
+                            }
+                            if (canBuildDown) {
+                                if (rnd == 0) {
+                                    //TODO: build down
+                                }
+                                rnd--;
+                            }
+                            if (canBuildleft) {
+                                if (rnd == 0) {
+                                    //TODO: build left
+                                }
+                                rnd--;
+                            }
+                            if (canBuildRight) {
+                                if (rnd == 0) {
+                                    //TODO: build right
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return this;
+    }
+
+    //check for each direction
+    private boolean checkBuildUp(int x, int y, int size) {
+        //no space to fit it up
+        if (y < size) return false;
+        //cant do corners
+        if (x == 0 || x == width - 1) return false;
+        return true;
+    }
+    private boolean checkBuildDown(int x, int y, int size) {
+        if (y > height - size - 1) return false;
+        if (x == 0 || x == width - 1) return false;
+        return true;
+    }
+    private boolean checkBuildLeft(int x, int y, int size) {
+        if (x < size) return false;
+        if (y == 0 || y == height - 1) return false;
+        return true;
+    }
+    private boolean checkBuildRight(int x, int y, int size) {
+        if (x > width - size - 1) return false;
+        if (y == 0 || y == height - 1) return false;
+        return true;
+    }
+
+    private WorldBuilder randomizeCave() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 tiles[x][y] = Math.random() < 0.5 ? Tile.FLOOR : Tile.WALL;
@@ -24,7 +141,7 @@ public class WorldBuilder {
         return this;
     }
 
-    private WorldBuilder smooth(int times) {
+    private WorldBuilder smoothCave(int times) {
         Tile[][] tiles2 = new Tile[width][height];
         for (int time = 0; time < times; time++) {
 
@@ -54,7 +171,7 @@ public class WorldBuilder {
     }
 
     public WorldBuilder makeCaves() {
-        return randomizeTiles().smooth(8);
+        return randomizeCave().smoothCave(8);
     }
 
 }
