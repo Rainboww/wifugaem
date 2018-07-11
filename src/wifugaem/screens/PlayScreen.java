@@ -74,8 +74,7 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_U: player.moveBy( 1,-1); break;
             case KeyEvent.VK_B: player.moveBy(-1, 1); break;
             case KeyEvent.VK_N: player.moveBy( 1, 1); break;
-            case KeyEvent.VK_S: WifuGameSerializer.serializeWorld(world);
-                                WifuGameSerializer.serializePlayer(player);
+            case KeyEvent.VK_S: WifuGameSerializer.serializeToPlayer(player);
                                 break;
         }
 

@@ -3,6 +3,7 @@ package wifugaem.screens;
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
 import wifugaem.Creature;
+import wifugaem.PlayerAi;
 import wifugaem.WifuGameSerializer;
 import wifugaem.World;
 
@@ -16,13 +17,19 @@ public class StartScreen implements Screen{
     public Screen respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()) {
             case KeyEvent.VK_ENTER: return new PlayScreen();
-            case KeyEvent.VK_SPACE: World w = WifuGameSerializer.deserializeWorld();
-                                    Creature p = WifuGameSerializer.deserializePlayer(w);
-                                    return new PlayScreen(w,p);
+            case KeyEvent.VK_SPACE: Creature p = WifuGameSerializer.deserializeFromPlayer();
+                                    if (!(p == null)) {
+                                        World w = p.getWorld();
+                                        new PlayerAi(p);
+                                        return new PlayScreen(w,p);
+                                    } else return new PlayScreen();
             case KeyEvent.VK_PAGE_UP: return new MapEditScreen();
-            case KeyEvent.VK_PAGE_DOWN: World x = WifuGameSerializer.deserializeWorld();
-                                    Creature q = WifuGameSerializer.deserializePlayer(x);
-                                    return new MapEditScreen(x,q);
+            case KeyEvent.VK_PAGE_DOWN: Creature q = WifuGameSerializer.deserializeFromPlayer();
+                                        if (!(q == null)) {
+                                            World x = q.getWorld();
+                                            new DebugAi(q);
+                                            return new MapEditScreen(x,q);
+                                        } else return new MapEditScreen();
             default: return this;
         }
     }

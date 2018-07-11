@@ -31,4 +31,8 @@ public class Creature implements Serializable {
     public void moveBy(int mx, int my){
         ai.onEnter(x+mx, y+my, world.tile(x+mx, y+my));
     }
+
+    public World getWorld() {
+        return world;
+    }
 }
