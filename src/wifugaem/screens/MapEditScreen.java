@@ -6,7 +6,7 @@ import wifugaem.*;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
-public class MapEditScreen implements Screen{
+public class MapEditScreen implements Screen {
     private World world;
     private Creature player;
     private int screenWidth;
@@ -20,7 +20,7 @@ public class MapEditScreen implements Screen{
         terminal.write('X', player.x - left, player.y - top);
     }
 
-    public MapEditScreen(){
+    public MapEditScreen() {
         screenWidth = 80;
         screenHeight = 21;
         createWorld();
@@ -37,7 +37,7 @@ public class MapEditScreen implements Screen{
         this.player.setCreatureAi(new DebugAi(this.player));
     }
 
-    private void createWorld(){
+    private void createWorld() {
         world = new WorldBuilder(90, 31)
                 .makeCaves()
                 .build();
@@ -52,8 +52,8 @@ public class MapEditScreen implements Screen{
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
-        for (int x = 0; x < screenWidth; x++){
-            for (int y = 0; y < screenHeight; y++){
+        for (int x = 0; x < screenWidth; x++) {
+            for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
                 int wy = y + top;
 
@@ -64,7 +64,7 @@ public class MapEditScreen implements Screen{
 
     public void setTile(int x, int y, World w) {
         Object[] options = Tile.values();
-        Object o = (Tile)JOptionPane.showInputDialog(
+        Object o = (Tile) JOptionPane.showInputDialog(
                 null,
                 "select tile",
                 "tile selection",
@@ -73,26 +73,45 @@ public class MapEditScreen implements Screen{
                 options,
                 options[0]
         );
-        w.setTile(x,y,(Tile) o);
+        w.setTile(x, y, (Tile) o);
     }
 
     public Screen respondToUserInput(KeyEvent key) {
-        switch (key.getKeyCode()){
+        switch (key.getKeyCode()) {
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_H: player.moveBy(-1, 0); break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_L: player.moveBy( 1, 0); break;
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_K: player.moveBy( 0,-1); break;
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_J: player.moveBy( 0, 1); break;
-            case KeyEvent.VK_Y: player.moveBy(-1,-1); break;
-            case KeyEvent.VK_U: player.moveBy( 1,-1); break;
-            case KeyEvent.VK_B: player.moveBy(-1, 1); break;
-            case KeyEvent.VK_N: player.moveBy( 1, 1); break;
-            case KeyEvent.VK_S: WifuGameSerializer.serializeToPlayer(player);
+            case KeyEvent.VK_H:
+                player.moveBy(-1, 0);
                 break;
-            case KeyEvent.VK_X: setTile(player.x, player.y, world); break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_L:
+                player.moveBy(1, 0);
+                break;
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_K:
+                player.moveBy(0, -1);
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_J:
+                player.moveBy(0, 1);
+                break;
+            case KeyEvent.VK_Y:
+                player.moveBy(-1, -1);
+                break;
+            case KeyEvent.VK_U:
+                player.moveBy(1, -1);
+                break;
+            case KeyEvent.VK_B:
+                player.moveBy(-1, 1);
+                break;
+            case KeyEvent.VK_N:
+                player.moveBy(1, 1);
+                break;
+            case KeyEvent.VK_S:
+                WifuGameSerializer.serializeToPlayer(player);
+                break;
+            case KeyEvent.VK_X:
+                setTile(player.x, player.y, world);
+                break;
         }
         return this;
     }
@@ -104,9 +123,9 @@ class DebugAi extends CreatureAi {
     }
 
     public void onEnter(int x, int y, Tile tile) {
-            if (super.creature.getWorld().tileExists(x, y)) {
-                creature.x = x;
-                creature.y = y;
-            }
+        if (super.creature.getWorld().tileExists(x, y)) {
+            creature.x = x;
+            creature.y = y;
+        }
     }
 }

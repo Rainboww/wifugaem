@@ -43,34 +43,36 @@ public class WorldBuilder {
         Random random = new Random();
 
         //keep going while free tiles exist and buildings are left to place, can probably way optimize that
-        while(attempts > 0 && isPossible) {
+        while (attempts > 0 && isPossible) {
             isPossible = false;
 
             //just go over all tiles
             for (int x = 0; x < width && attempts > 0; x++) {
                 for (int y = 0; y < height && attempts > 0; y++) {
                     //only check valid entrance tiles
-                    if (tiles[x][y].isGround()) {
-                        isPossible = true;
+                    if (tiles[x][y].isGround() && tiles[x][y] != Tile.BUILDING_FLOOR) {
                         //dont always go for the first tile, spread out using earlier valid tiles check
-                        if (Math.random() < (int) (attempts / validTiles)) {
-                            int leewayXMinus = x;
-                            int leewayXPlus = width - x - 1;
-                            int leewayYMinus = y;
-                            int leewayYPlus = height - y - 1;
 
-                            boolean canBuildUp = checkBuildUp(x, y, size);
-                            boolean canBuildDown = checkBuildDown(x, y, size);
-                            boolean canBuildleft = checkBuildLeft(x, y, size);
-                            boolean canBuildRight = checkBuildRight(x, y, size);
-                            //randomize build direction
-                            int buildOptions = 0;
-                            if (canBuildDown) buildOptions++;
-                            if (canBuildleft) buildOptions++;
-                            if (canBuildRight) buildOptions++;
-                            if (canBuildUp) buildOptions++;
+                        int leewayXMinus = (x > size - 2) ? size - 2 : x;
+                        int leewayXPlus = (width - x - 1 > size - 2) ? size - 2 : width - x - 1;
+                        int leewayYMinus = (y > size - 2) ? size - 2 : y;
+                        int leewayYPlus = (height - y - 1 > size - 2) ? size - 2 : height - y - 1;
 
-                            if (buildOptions == 0) continue;
+                        boolean canBuildUp = checkBuildUp(x, y, size);
+                        boolean canBuildDown = checkBuildDown(x, y, size);
+                        boolean canBuildleft = checkBuildLeft(x, y, size);
+                        boolean canBuildRight = checkBuildRight(x, y, size);
+                        //randomize build direction
+                        int buildOptions = 0;
+                        if (canBuildDown) buildOptions++;
+                        if (canBuildleft) buildOptions++;
+                        if (canBuildRight) buildOptions++;
+                        if (canBuildUp) buildOptions++;
+
+                        if (buildOptions == 0) continue;
+                        else isPossible = true;
+
+                        if (Math.random() < ((double) attempts / validTiles)) {
                             //sadly can't do nextint(0)
                             int rnd;
                             if (buildOptions == 1) rnd = 0;
@@ -79,28 +81,58 @@ public class WorldBuilder {
                             //select chosen option
                             if (canBuildUp) {
                                 if (rnd == 0) {
-                                    //TODO: build up
+                                    //randomly place in available space
+                                    if (leewayXMinus + leewayXPlus + 1 == size) {
+                                        buildBuilding(x - leewayXMinus, y - size, size);
+                                    } else {
+                                        int offsetX = random.nextInt((leewayXMinus + 1 + leewayXPlus) - size);
+                                        buildBuilding(x - leewayXMinus + offsetX, y - size, size);
+                                    }
+                                    tiles[x][y - 1] = Tile.DOOR_CLOSED;
+                                    attempts--;
                                 }
                                 rnd--;
                             }
                             if (canBuildDown) {
                                 if (rnd == 0) {
-                                    //TODO: build down
+                                    if (leewayXMinus + leewayXPlus + 1 == size) {
+                                        buildBuilding(x - leewayXMinus, y + 1, size);
+                                    } else {
+                                        int offsetX = random.nextInt((leewayXMinus + 1 + leewayXPlus) - size);
+                                        buildBuilding(x - leewayXMinus + offsetX, y + 1, size);
+                                    }
+                                    tiles[x][y + 1] = Tile.DOOR_CLOSED;
+                                    attempts--;
                                 }
                                 rnd--;
                             }
                             if (canBuildleft) {
                                 if (rnd == 0) {
-                                    //TODO: build left
+                                    if (leewayYMinus + leewayYPlus + 1 == size) {
+                                        buildBuilding(x - size, y - leewayYMinus, size);
+                                    } else {
+                                        int offsetY = random.nextInt((leewayYMinus + 1 + leewayYPlus) - size);
+                                        buildBuilding(x - size, y - leewayYMinus + offsetY, size);
+                                    }
+                                    tiles[x - 1][y] = Tile.DOOR_CLOSED;
+                                    attempts--;
                                 }
                                 rnd--;
                             }
                             if (canBuildRight) {
                                 if (rnd == 0) {
-                                    //TODO: build right
+                                    if (leewayYMinus + leewayYPlus + 1 == size) {
+                                        buildBuilding(x + 1, y - leewayYMinus, size);
+                                    } else {
+                                        int offsetY = random.nextInt((leewayYMinus + 1 + leewayYPlus) - size);
+                                        buildBuilding(x + 1, y - leewayYMinus + offsetY, size);
+                                    }
+                                    tiles[x + 1][y] = Tile.DOOR_CLOSED;
+                                    attempts--;
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -116,20 +148,49 @@ public class WorldBuilder {
         if (x == 0 || x == width - 1) return false;
         return true;
     }
+
     private boolean checkBuildDown(int x, int y, int size) {
         if (y > height - size - 1) return false;
         if (x == 0 || x == width - 1) return false;
         return true;
     }
+
     private boolean checkBuildLeft(int x, int y, int size) {
         if (x < size) return false;
         if (y == 0 || y == height - 1) return false;
         return true;
     }
+
     private boolean checkBuildRight(int x, int y, int size) {
         if (x > width - size - 1) return false;
         if (y == 0 || y == height - 1) return false;
         return true;
+    }
+
+    //build single doorless square building
+    private void buildBuilding(int startX, int startY, int size) {
+        //bottom wall
+        for (int i = 0; i < size; i++) {
+            tiles[startX + i][startY + size - 1] = Tile.BUILDING_WALL;
+        }
+        //top wall
+        for (int i = 0; i < size; i++) {
+            tiles[startX + i][startY] = Tile.BUILDING_WALL;
+        }
+        //left wall
+        for (int i = 0; i < size - 2; i++) {
+            tiles[startX][startY + i + 1] = Tile.BUILDING_WALL;
+        }
+        //right wall
+        for (int i = 0; i < size - 2; i++) {
+            tiles[startX + size - 1][startY + i + 1] = Tile.BUILDING_WALL;
+        }
+        //fill inside
+        for (int i = 0; i < size - 2; i++) {
+            for (int j = 0; j < size - 2; j++) {
+                tiles[startX + j + 1][startY + i + 1] = Tile.BUILDING_FLOOR;
+            }
+        }
     }
 
     private WorldBuilder randomizeCave() {
@@ -172,6 +233,14 @@ public class WorldBuilder {
 
     public WorldBuilder makeCaves() {
         return randomizeCave().smoothCave(8);
+    }
+
+    public WorldBuilder makeFields() {
+        return randomizeField();
+    }
+
+    public WorldBuilder addBuildings() {
+        return addAccessibleBuildings(10, 3);
     }
 
 }

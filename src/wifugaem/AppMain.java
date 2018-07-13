@@ -1,7 +1,9 @@
 package wifugaem;
 
 import javax.swing.JFrame;
+
 import asciiPanel.AsciiPanel;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Properties;
@@ -10,12 +12,12 @@ import java.util.Random;
 import wifugaem.screens.Screen;
 import wifugaem.screens.StartScreen;
 
-public class AppMain extends JFrame implements KeyListener{
+public class AppMain extends JFrame implements KeyListener {
 
     private AsciiPanel terminal;
     private Screen screen;
 
-    public AppMain(){
+    public AppMain() {
         super();
         terminal = new AsciiPanel();
         add(terminal);
@@ -25,7 +27,7 @@ public class AppMain extends JFrame implements KeyListener{
         repaint();
     }
 
-    public void repaint(){
+    public void repaint() {
         terminal.clear();
         screen.displayOutput(terminal);
         super.repaint();
@@ -36,9 +38,11 @@ public class AppMain extends JFrame implements KeyListener{
         repaint();
     }
 
-    public void keyReleased(KeyEvent e) { }
+    public void keyReleased(KeyEvent e) {
+    }
 
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {
+    }
 
     public static void main(String[] args) {
         AppMain app = new AppMain();
