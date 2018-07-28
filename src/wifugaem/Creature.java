@@ -44,23 +44,22 @@ public class Creature implements Serializable {
 
 
     public void moveBy(int mx, int my) {
-        Creature other = world.creature(x+mx, y+my);
+        Creature other = world.creature(x + mx, y + my);
 
         if (other == null)
-            ai.onEnter(x+mx, y+my, world.tile(x+mx, y+my));
+            ai.onEnter(x + mx, y + my, world.tile(x + mx, y + my));
         else
             attack(other);
     }
 
-    public void attack(Creature other){
+    public void attack(Creature other) {
         world.remove(other);
     }
 
 
-    public void update(){
+    public void update() {
         ai.onUpdate();
     }
-
 
 
     public World getWorld() {

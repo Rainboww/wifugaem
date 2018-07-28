@@ -20,9 +20,10 @@ public class FungusAi extends CreatureAi {
             spread();
         }
     }
-    private void spread(){
-        int x = creature.x + (int)(Math.random() * 11) - 5;
-        int y = creature.y + (int)(Math.random() * 11) - 5;
+
+    private void spread() {
+        int x = creature.x + (int) (Math.random() * 11) - 5;
+        int y = creature.y + (int) (Math.random() * 11) - 5;
 
         if (!creature.canEnter(x, y))
             return;

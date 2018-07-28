@@ -13,7 +13,6 @@ public class PlayScreen implements Screen {
     private int screenHeight;
 
 
-
     public PlayScreen(MapType maptype) {
         screenWidth = 80;
         screenHeight = 21;
@@ -36,9 +35,9 @@ public class PlayScreen implements Screen {
                 break;
         }
 
-    if (creatureFactory == null) {
-     creatureFactory = new CreatureFactory(world);
-    }
+        if (creatureFactory == null) {
+            creatureFactory = new CreatureFactory(world);
+        }
         player = creatureFactory.newPlayer();
     }
 
@@ -109,11 +108,11 @@ public class PlayScreen implements Screen {
         //terminal.write('X', player.x - left, player.y - top);
 
 
-        for (Creature creature: world.creatures) {
-            if(left <= creature.x && creature.x < left+screenWidth && top <= creature.y && creature.y < top+screenHeight){
-            terminal.write(creature.glyph(),creature.x - left, creature.y - top, creature.color());
+        for (Creature creature : world.creatures) {
+            if (left <= creature.x && creature.x < left + screenWidth && top <= creature.y && creature.y < top + screenHeight) {
+                terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
+            }
         }
-    }
     }
 
 

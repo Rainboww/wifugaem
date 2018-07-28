@@ -27,7 +27,7 @@ public class World implements Serializable {
         this.width = tiles.length;
         this.height = tiles[0].length;
         this.creatures = new ArrayList<Creature>();
-        }
+    }
 
     public Tile tile(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= height)
@@ -71,7 +71,7 @@ public class World implements Serializable {
             x = (int) (Math.random() * width);
             y = (int) (Math.random() * height);
         }
-        while (!tile(x, y).isGround() || creature(x,y) != null);
+        while (!tile(x, y).isGround() || creature(x, y) != null);
 
         creature.x = x;
         creature.y = y;
@@ -82,8 +82,8 @@ public class World implements Serializable {
         tiles[x][y] = tile;
     }
 
-    public Creature creature(int x, int y){
-        for (Creature c : creatures){
+    public Creature creature(int x, int y) {
+        for (Creature c : creatures) {
             if (c.x == x && c.y == y)
                 return c;
         }
@@ -94,9 +94,9 @@ public class World implements Serializable {
         creatures.remove(other);
     }
 
-    public void update(){
+    public void update() {
         List<Creature> toUpdate = new ArrayList<Creature>(creatures);
-        for (Creature creature : toUpdate){
+        for (Creature creature : toUpdate) {
             creature.update();
         }
     }

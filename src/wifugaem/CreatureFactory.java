@@ -16,21 +16,19 @@ public class CreatureFactory {
         return player;
     }
 
-    public Creature newFungus(CreatureFactory creaturefactory){
+    public Creature newFungus(CreatureFactory creaturefactory) {
         Creature fungus = new Creature(world, 'f', AsciiPanel.green);
         world.addAtEmptyLocation(fungus);
         new FungusAi(fungus, creaturefactory);
         return fungus;
     }
 
-    public Creature newFungus(CreatureFactory creaturefactory, int spreadcount){
+    public Creature newFungus(CreatureFactory creaturefactory, int spreadcount) {
         Creature fungus = new Creature(world, 'f', AsciiPanel.green);
         world.addAtEmptyLocation(fungus);
         new FungusAi(fungus, creaturefactory, spreadcount);
         return fungus;
     }
-
-
 
 
     public static void setAsPlayer(Creature creature) {
