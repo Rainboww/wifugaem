@@ -3,6 +3,7 @@ package wifugaem;
 import java.awt.*;
 import java.io.Serializable;
 
+
 public class Creature implements Serializable {
     private World world;
 

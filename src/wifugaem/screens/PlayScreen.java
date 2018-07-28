@@ -12,20 +12,18 @@ public class PlayScreen implements Screen {
     private int screenWidth;
     private int screenHeight;
 
-    public void displayOutput(AsciiPanel terminal) {
-        int left = getScrollX();
-        int top = getScrollY();
 
-        displayTiles(terminal, left, top);
-        terminal.write('X', player.x - left, player.y - top);
-    }
 
     public PlayScreen(MapType maptype) {
         screenWidth = 80;
         screenHeight = 21;
+        CreatureFactory creatureFactory = null;
+
         switch (maptype) {
             case CAVES:
                 createCaveWorld();
+                creatureFactory = new CreatureFactory(world);
+                createCreatures(creatureFactory);
                 break;
             case FIELD:
                 createFieldWorld();
@@ -37,8 +35,18 @@ public class PlayScreen implements Screen {
                 createFieldBuildingsWorld();
                 break;
         }
-        CreatureFactory creatureFactory = new CreatureFactory(world);
+
+    if (creatureFactory == null) {
+     creatureFactory = new CreatureFactory(world);
+    }
         player = creatureFactory.newPlayer();
+    }
+
+    private void createCreatures(CreatureFactory creatureFactory) {
+
+        for (int i = 0; i < 8; i++) {
+            creatureFactory.newFungus();
+        }
     }
 
     public PlayScreen(World world, Creature player) {
@@ -92,6 +100,22 @@ public class PlayScreen implements Screen {
             }
         }
     }
+
+    public void displayOutput(AsciiPanel terminal) {
+        int left = getScrollX();
+        int top = getScrollY();
+
+        displayTiles(terminal, left, top);
+        //terminal.write('X', player.x - left, player.y - top);
+
+
+        for (Creature creature: world.creatures) {
+            if(left <= creature.x && creature.x < left+screenWidth && top <= creature.y && creature.y < top+screenHeight){
+            terminal.write(creature.glyph(),creature.x - left, creature.y - top, creature.color());
+        }
+    }
+    }
+
 
     public Screen respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()) {
