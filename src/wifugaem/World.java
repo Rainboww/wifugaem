@@ -89,4 +89,15 @@ public class World implements Serializable {
         }
         return null;
     }
+
+    public void remove(Creature other) {
+        creatures.remove(other);
+    }
+
+    public void update(){
+        List<Creature> toUpdate = new ArrayList<Creature>(creatures);
+        for (Creature creature : toUpdate){
+            creature.update();
+        }
+    }
 }

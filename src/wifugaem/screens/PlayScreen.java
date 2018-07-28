@@ -45,7 +45,7 @@ public class PlayScreen implements Screen {
     private void createCreatures(CreatureFactory creatureFactory) {
 
         for (int i = 0; i < 8; i++) {
-            creatureFactory.newFungus();
+            creatureFactory.newFungus(creatureFactory);
         }
     }
 
@@ -151,6 +151,8 @@ public class PlayScreen implements Screen {
                 WifuGameSerializer.serializeToPlayer(player);
                 break;
         }
+
+        world.update();
 
         return this;
     }
