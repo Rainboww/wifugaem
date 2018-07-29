@@ -63,17 +63,36 @@ public class MapEditScreen implements Screen {
     }
 
     public void setTile(int x, int y, World w) {
-        Object[] options = Tile.values();
-        Object o = (Tile) JOptionPane.showInputDialog(
+        Object[] baseOptions = TileBase.values();
+        Object o = JOptionPane.showInputDialog(
                 null,
-                "select tile",
+                "select tilebase",
                 "tile selection",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
-                options,
-                options[0]
+                baseOptions,
+                baseOptions[0]
         );
-        w.setTile(x, y, (Tile) o);
+        Object[] fillingOptions = TileFilling.values();
+        Object p = JOptionPane.showInputDialog(
+                null,
+                "select tilefilling",
+                "tile selection",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                fillingOptions,
+                fillingOptions[0]
+        );
+        String q = (String) JOptionPane.showInputDialog(
+                null,
+                "enter elevation",
+                "tile selection",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                ""
+        );
+        w.setTile(x, y, new Tile((TileBase) o, (TileFilling) p, Integer.parseInt(q)));
     }
 
     public Screen respondToUserInput(KeyEvent key) {

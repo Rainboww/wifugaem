@@ -31,7 +31,7 @@ public class World implements Serializable {
 
     public Tile tile(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= height)
-            return Tile.BOUNDS;
+            return new Tile(TileBase.BOUNDS);
         else
             return tiles[x][y];
     }
@@ -42,23 +42,23 @@ public class World implements Serializable {
 
 
     public char glyph(int x, int y) {
-        return tile(x, y).glyph();
+        return tile(x, y).getGlyph();
     }
 
     public Color color(int x, int y) {
-        return tile(x, y).color();
+        return tile(x, y).getColor();
     }
 
     public void dig(int x, int y) {
         if (tile(x, y).isDiggable())
-            tiles[x][y] = Tile.FLOOR;
+            tiles[x][y].setFilling(TileFilling.EMPTY);
     }
 
     public void open(int x, int y) {
         if (tile(x, y).canOpen())
-            switch (tile(x, y)) {
+            switch (tile(x, y).getFilling()) {
                 case DOOR_CLOSED:
-                    tiles[x][y] = Tile.DOOR_OPEN;
+                    tiles[x][y].setFilling(TileFilling.DOOR_OPEN);
                     break;
             }
     }
@@ -71,7 +71,7 @@ public class World implements Serializable {
             x = (int) (Math.random() * width);
             y = (int) (Math.random() * height);
         }
-        while (!tile(x, y).isGround() || creature(x, y) != null);
+        while (!tile(x, y).canEnter() || creature(x, y) != null);
 
         creature.x = x;
         creature.y = y;

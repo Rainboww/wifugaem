@@ -1,48 +1,95 @@
 package wifugaem;
 
-
-import asciiPanel.AsciiPanel;
-
 import java.awt.*;
 
-public enum Tile {
-    FLOOR((char) 250, AsciiPanel.yellow),
-    WALL((char) 177, AsciiPanel.yellow),
-    BOUNDS('x', AsciiPanel.brightBlack),
-    BUILDING_WALL('=', AsciiPanel.yellow),
-    BUILDING_FLOOR((char) 250, AsciiPanel.yellow),
-    TREE('$', AsciiPanel.green),
-    GRASS((char) 250, AsciiPanel.green),
-    DOOR_CLOSED('|', AsciiPanel.yellow),
-    DOOR_OPEN('/', AsciiPanel.yellow);
+public class Tile {
+    private TileBase base;
+    private TileFilling filling;
+    private double elevation;
 
     private char glyph;
+    private java.awt.Color color;
 
-    public char glyph() {
+    public Tile(TileBase b, TileFilling f, double elevation) {
+        base = b;
+        filling = f;
+        this.elevation = elevation;
+        updateTile();
+    }
+
+    public Tile(TileBase b, TileFilling f) {
+        base = b;
+        filling = f;
+        this.elevation = 0;
+        updateTile();
+    }
+
+    public Tile(TileBase b, double elevation) {
+        base = b;
+        filling = TileFilling.EMPTY;
+        this.elevation = elevation;
+        updateTile();
+    }
+
+    public Tile(TileBase b) {
+        base = b;
+        filling = TileFilling.EMPTY;
+        this.elevation = 0;
+        updateTile();
+    }
+
+    public Tile updateTile() {
+        if (filling == TileFilling.EMPTY) {
+            glyph = base.getGlyph();
+            color = base.getColor();
+        } else {
+            glyph = filling.getGlyph();
+            color = filling.getColor();
+        }
+        return this;
+    }
+
+    public char getGlyph() {
         return glyph;
     }
 
-    private Color color;
-
-    public Color color() {
+    public Color getColor() {
         return color;
     }
 
-    Tile(char glyph, Color color) {
-        this.glyph = glyph;
-        this.color = color;
+    public double getElevation() {
+        return elevation;
+    }
+
+    public TileFilling getFilling() {
+        return filling;
+    }
+
+    public TileBase getBase() {
+        return base;
     }
 
     public boolean isDiggable() {
-        return this == Tile.WALL;
+        return filling == TileFilling.EMPTY || filling.isDiggable();
     }
 
     public boolean canOpen() {
-        return this == Tile.DOOR_CLOSED;
+        return filling == TileFilling.EMPTY || filling.canOpen();
     }
 
-    //prolly need to make this an actual property or smth
-    public boolean isGround() {
-        return this != WALL && this != BOUNDS && this != BUILDING_WALL && this != TREE && this != DOOR_CLOSED;
+    public boolean isEmpty() {
+        return filling == TileFilling.EMPTY;
+    }
+
+    public boolean canEnter() {
+        if (filling == TileFilling.EMPTY) {
+            return base.canEnter();
+        } else return filling.canEnter();
+    }
+
+    public Tile setFilling(TileFilling f) {
+        filling = f;
+        updateTile();
+        return this;
     }
 }
