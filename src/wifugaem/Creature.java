@@ -70,4 +70,8 @@ public class Creature implements Serializable {
     public boolean canEnter(int wx, int wy) {
         return world.tile(wx, wy).canEnter() && world.creature(wx, wy) == null;
     }
+
+    public CreatureAi getAi() {
+        return ai;
+    }
 }

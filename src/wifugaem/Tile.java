@@ -71,11 +71,11 @@ public class Tile implements Serializable {
     }
 
     public boolean isDiggable() {
-        return filling == TileFilling.EMPTY || filling.isDiggable();
+        return filling.isDiggable();
     }
 
     public boolean canOpen() {
-        return filling == TileFilling.EMPTY || filling.canOpen();
+        return filling.canOpen();
     }
 
     public boolean isEmpty() {

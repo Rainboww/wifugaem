@@ -22,7 +22,7 @@ public class PlayScreen implements Screen {
             case CAVES:
                 createCaveWorld();
                 creatureFactory = new CreatureFactory(world);
-                createCreatures(creatureFactory);
+                createCatflower(creatureFactory);
                 break;
             case FIELD:
                 createFieldWorld();
@@ -41,8 +41,13 @@ public class PlayScreen implements Screen {
         player = creatureFactory.newPlayer();
     }
 
-    private void createCreatures(CreatureFactory creatureFactory) {
+    private void createCatflower(CreatureFactory creatureFactory) {
+        for (int i = 0; i < 8; i++) {
+            creatureFactory.newCatFlower(creatureFactory);
+        }
+    }
 
+    private void createFungus(CreatureFactory creatureFactory) {
         for (int i = 0; i < 8; i++) {
             creatureFactory.newFungus(creatureFactory);
         }

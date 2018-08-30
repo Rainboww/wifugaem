@@ -30,6 +30,20 @@ public class CreatureFactory {
         return fungus;
     }
 
+    public Creature newCatFlower(CreatureFactory creatureFactory) {
+        Creature catflower = new Creature(world, 'C', AsciiPanel.yellow);
+        world.addAtEmptyLocation(catflower);
+        new CatflowerAi(catflower, creatureFactory);
+        return catflower;
+    }
+
+    public Creature newCatflower(CreatureFactory creatureFactory, int boundX1, int boundX2, int boundY1, int boundY2) {
+        Creature catflower = new Creature(world, 'C', AsciiPanel.yellow);
+        world.addAtEmptyLocation(catflower, boundX1, boundX2, boundY1, boundY2);
+        new CatflowerAi(catflower, creatureFactory);
+        return catflower;
+    }
+
 
     public static void setAsPlayer(Creature creature) {
         new PlayerAi(creature);

@@ -28,6 +28,6 @@ public enum TileBase {
     }
 
     protected boolean canEnter() {
-        return true;
+        return this != BOUNDS;
     }
 }

@@ -78,6 +78,34 @@ public class World implements Serializable {
         creatures.add(creature);
     }
 
+    public void addAtEmptyLocation(Creature creature, int boundX1, int boundX2, int boundY1, int boundY2) {
+        int x;
+        int y;
+        boolean fail = true;
+        //test if valid location exists
+        //TODO: check only valid locations
+        for (int a = boundX1; a <= boundX2; a++) {
+            for (int b = boundY1; b <= boundY2; b++) {
+                if (tile(a, b).canEnter() && creature(a, b) == null) {
+                    fail = false;
+                }
+            }
+        }
+        //boundaries inclusive
+        if (!fail) {
+            do {
+                x = (int) (Math.random() * (boundX2 - boundX1 + 1)) + boundX1;
+                y = (int) (Math.random() * (boundY2 - boundY1 + 1)) + boundY1;
+            }
+            while (!tile(x, y).canEnter() || creature(x, y) != null);
+        creature.x = x;
+        creature.y = y;
+        creatures.add(creature);
+        } else {
+            //TODO: failure condition
+        }
+    }
+
     public void setTile(int x, int y, Tile tile) {
         tiles[x][y] = tile;
     }
