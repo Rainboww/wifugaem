@@ -242,5 +242,4 @@ public class WorldBuilder {
     public WorldBuilder addBuildings() {
         return addAccessibleBuildings(10, 3);
     }
-
 }

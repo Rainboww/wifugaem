@@ -34,4 +34,3 @@ public class FungusAi extends CreatureAi {
 
     }
 }
-

@@ -42,6 +42,4 @@ public enum TileFilling {
     protected boolean canEnter() {
         return this.isPassable;
     }
-
-
 }
